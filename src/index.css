@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg:    #0a0a0f;
+    --bg2:   #0f0e17;
+    --s1:    rgba(255,255,255,.045);
+    --s2:    rgba(255,255,255,.08);
+    --s3:    rgba(255,255,255,.13);
+    --line:  rgba(255,255,255,.10);
+    --line2: rgba(255,255,255,.16);
+    --ink:   #f5f1ea;
+    --ink2:  #c8c2b8;
+    --mute:  #9a95a3;
+    --gold:  #e9c880;
+    --gold2: #f4dca5;
+    --rose:  #ff6b8b;
+    --ok:    #4ade9c;
+    --ok-dim:      rgba(74,222,156,.18);
+    --danger:      #f87171;
+    --danger-dim:  rgba(248,113,113,.18);
+    --card:  #14131a;
+    --card2: #1b1924;
+    --glow:  rgba(233,200,128,.16);
+    --glow2: rgba(255,107,139,.10);
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans:  "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:  "JetBrains Mono", Menlo, "Courier New", monospace;
+
+    padding-top:    env(safe-area-inset-top,    0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
+  }
+
+  /* auto light when OS prefers it and no explicit override */
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg:    #f6f2ea;
+      --bg2:   #fffdf8;
+      --s1:    rgba(20,17,13,.04);
+      --s2:    rgba(20,17,13,.08);
+      --s3:    rgba(20,17,13,.13);
+      --line:  rgba(20,17,13,.12);
+      --line2: rgba(20,17,13,.22);
+      --ink:   #17130e;
+      --ink2:  #3a342c;
+      --mute:  #6f685d;
+      --gold:  #a87a1c;
+      --gold2: #c49a35;
+      --rose:  #d63a5f;
+      --ok:    #0f9a5f;
+      --ok-dim:     rgba(15,154,95,.14);
+      --danger:     #dc2626;
+      --danger-dim: rgba(220,38,38,.12);
+      --card:  #fffdf8;
+      --card2: #f6f2ea;
+      --glow:  rgba(168,122,28,.14);
+      --glow2: rgba(214,58,95,.08);
+    }
+  }
+
+  [data-theme="light"] {
+    --bg:    #f6f2ea;
+    --bg2:   #fffdf8;
+    --s1:    rgba(20,17,13,.04);
+    --s2:    rgba(20,17,13,.08);
+    --s3:    rgba(20,17,13,.13);
+    --line:  rgba(20,17,13,.12);
+    --line2: rgba(20,17,13,.22);
+    --ink:   #17130e;
+    --ink2:  #3a342c;
+    --mute:  #6f685d;
+    --gold:  #a87a1c;
+    --gold2: #c49a35;
+    --rose:  #d63a5f;
+    --ok:    #0f9a5f;
+    --ok-dim:     rgba(15,154,95,.14);
+    --danger:     #dc2626;
+    --danger-dim: rgba(220,38,38,.12);
+    --card:  #fffdf8;
+    --card2: #f6f2ea;
+    --glow:  rgba(168,122,28,.14);
+    --glow2: rgba(214,58,95,.08);
+  }
+
+  [data-theme="dark"] {
+    --bg: #0a0a0f;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+body {
+  background:
+    radial-gradient(900px 500px at 80% -10%,  var(--glow),  transparent 60%),
+    radial-gradient(700px 400px at -10% 30%, var(--glow2), transparent 60%),
+    var(--bg);
+  color: var(--ink);
+  font: 15px/1.5 var(--sans);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; cursor: pointer; }
+
+/* ── utility ─────────────────────────────────────────────────────────────── */
+.serif { font-family: var(--serif); }
+.sans  { font-family: var(--sans);  }
+.mono  { font-family: var(--mono);  }
+
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+
+/* ── swipe card drag ─────────────────────────────────────────────────────── */
+.swipe-card { touch-action: none; user-select: none; }
+
+/* ── animations ─────────────────────────────────────────────────────────── */
+@keyframes spin { to { transform: rotate(360deg) } }
+@keyframes bs-up {
+  from { transform: translateY(12px); opacity: 0; }
+}
+
+/* ── toast system ────────────────────────────────────────────────────────── */
+#bs-toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: grid;
+  gap: 8px;
+  z-index: 99;
+  width: min(92vw, 420px);
+  pointer-events: none;
+}
+
+.bs-toast {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.4);
+  font-size: 14px;
+  pointer-events: auto;
+  animation: bs-up .3s;
+}
+
+.bs-toast a { color: var(--gold); }
+
+/* ── confetti particles ──────────────────────────────────────────────────── */
+.bs-conf {
+  position: fixed;
+  pointer-events: none;
+  z-index: 60;
+  border-radius: 2px;
+}
